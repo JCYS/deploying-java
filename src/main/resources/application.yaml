@@ -1,0 +1,38 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /apiservice
+batch:
+  letters: 5
+spring:
+  threads:
+    virtual:
+      enabled: true
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  task:
+    scheduling:
+      pool:
+        size: 10
+com:
+  innovax:
+    isLocal: true
+
+datasource:
+  hikari:
+    maximum-pool-size: 100
+    minimum-idle: 10
+    connection-timeout: 30000
+    max-lifetime: 900000
+    idle-timeout: 600000
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+    operationsSorter: method
+    tagsSorter: alpha
+

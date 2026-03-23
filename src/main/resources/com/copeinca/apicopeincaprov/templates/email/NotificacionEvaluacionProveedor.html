@@ -1,0 +1,84 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body style="width: 600px;margin: auto;padding: 0;font-family: Arial, Helvetica, sans-serif;font-size: 14px;color: #333">
+<!-- gold bar -->
+<table cellspacing="0" cellpadding="0" width="600px"
+       style="border-bottom-style: solid;border-bottom-color: #F0AB00;border-bottom-width: 8px;padding-top: 13px;padding-bottom: 12px">
+</table>
+<table cellspacing="0" cellpadding="0" width="600px">
+    <tr style="border-collapse: collapse;width: 600px;padding: 0;margin: 0">
+        <td style="border-collapse: collapse;width: 600px;padding: 0;margin: 0;padding-top: 36px;padding-bottom: 12px">
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Estimado <b>${company_name}</b>,
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Se le comunica que ha habido modificaciones en su evaluación <b>${rol_mensaje}</b>, en nuestra app de Control de Proveedores.
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Deberá revisar los datos accediendo con su usuario <b>${username}</b> y su clave, en la url <a href="${url_btp}">${url_btp}</a>
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                <b>Sedes permitidas:</b> ${allowed_sites}<br/>
+                <b>Status SSO:</b> ${status_sso}  <br/>
+                <b>N° Docs adjuntos SSO:</b> ${sso_docs_count}<br/>
+                <b>Alto riesgo?:</b> ${high_risk}  <br/>
+                <b>N° Docs adjuntos Alto riesgo:</b> ${high_risk_docs_count}<br/>
+                <b>A bordo?:</b> ${onboard}  <br/>
+                <b>Tiene Vigencia SSO?:</b> ${has_vigencia_sso}  <br/>
+                <b>Fecha Vigencia SSO?:</b> ${date_vigencia_sso}  <br/>
+                <b>Tiene Vigencia Calidad Ambiental?</b> ${has_vigencia_ca}  <br/>
+                <b>Fecha Vigencia Calidad Ambiental?</b> ${date_vigencia_ca}  <br/>
+                <b>N° Docs adjuntos a bordo:</b> ${onboard_docs_count}<br/>
+                <b>Status Calidad Ambiental:</b> ${status_environmental_quality}  <br/>
+                <b>N° Docs adjuntos C.Amb:</b> ${environmental_docs_count}
+            </p>
+
+            #if($workers && $workers.size() > 0)
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                <b>Lista de Trabajadores</b>
+            </p>
+            <table style="width:100%;border-collapse:collapse;border:1px solid #ddd;">
+                <tr style="background-color:#f0ab00;color:white;">
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">DNI</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">Nombre Completo</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">Status SSO</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">Motivo SSO</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">N° docs</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">Alto Riesgo</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">N° Docs AR</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">Prevenc</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">N° Docs Prevenc</th>
+                </tr>
+                #foreach($worker in $workers)
+                <tr>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.dni}</td>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.fullName}</td>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.statusSso}</td>
+                    <td style="border:1px solid #ddd;padding:8px;">$!worker.reasonSso</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.docsCount}</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.highRisk}</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.highRiskDocsCount}</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.preventionist}</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.preventionistDocsCount}</td>
+                </tr>
+                #end
+            </table>
+            #end
+        </td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" width="600px">
+    <tr style="border-collapse: collapse;width: 600px;padding: 0;margin: 0">
+        <td style="border-collapse: collapse;width: 600px;padding: 0;margin: 0;padding-top: 12px;padding-bottom: 36px">
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Atentamente,<br/>
+                Administrador de Procesos
+            </p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+

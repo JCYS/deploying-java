@@ -1,0 +1,39 @@
+_schema-version: "3.2"
+ID: com.jcystec.apicopeinca.service.dev
+extends: com.jcystec.apicopeinca.service
+
+modules:
+
+  # ---------------- BACKEND ----------------
+  - name: api-copeinca-service
+    properties:
+      SPRING_PROFILES_ACTIVE: dev
+      COM_INNOVAX_ISLOCAL: false
+    parameters:
+      app-name: api-copeinca-service-dev
+      instances: 1
+      memory: 2048M
+      routes:
+        - route: copeinca-dev-backend.${default-domain}
+
+  # ---------------- APP ROUTER ----------------
+  - name: api-copeinca-service-router
+    parameters:
+      app-name: api-copeinca-service-router-dev
+      instances: 1
+      memory: 1024M
+      routes:
+        - route: copeinca-dev-router.${default-domain}
+
+resources:
+
+  # ---------------- XSUAA ----------------
+  - name: api-copeinca-service-xsuaa-service
+    parameters:
+      config:
+        xsappname: api-copeinca-service-dev
+
+  # ---------------- DESTINATION ----------------
+  - name: api-copeinca-service-destination-service
+    parameters:
+      service-name: api-copeinca-service-destination-dev

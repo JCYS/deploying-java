@@ -1,0 +1,46 @@
+CREATE OR REPLACE VIEW VIEW_SOLICITUD_VISITA_HISTORIAL_REPORT AS
+SELECT
+    -- Información básica de la solicitud de visita (campos directos sin alias)
+    svh.SOLICITUD_VISITA_HISTORIAL_ID,
+    svh.FECHA_HORA,
+    svh.USUARIO,
+    svh.AMBITO,
+    svh.REVISION,
+    svh.RPTA_BY_USUARIO,
+
+    -- Foreign Keys (campos directos sin alias)
+    svh.SOLICITUD_VISITA_ID,
+    svh.ESTADO_SOLICITUD_VISITA_CODE,
+
+    -- Información de SV_SOLICITUD_VISISTA - prefijo SOLVIS_
+    sv.NRO_ORDEN_SERVICIO AS SOLVIS_NRO_ORDEN_SERVICIO,
+    sv.CODIGO_VISITA AS SOLVIS_CODIGO_VISITA,
+
+    -- Información de SV_ESTADO_SOLICITUD_VISITA - prefijo ESV_
+    esv.NAME AS ESV_NOMBRE,
+
+    -- =========================
+    -- Historial previo
+    -- =========================
+    LAG(svh.ESTADO_SOLICITUD_VISITA_CODE) OVER (
+        PARTITION BY svh.SOLICITUD_VISITA_ID
+        ORDER BY svh.FECHA_HORA
+    ) AS PREV_ESTADO_SOLICITUD_VISITA_CODE,
+
+    LAG(esv.NAME) OVER (
+        PARTITION BY svh.SOLICITUD_VISITA_ID
+        ORDER BY svh.FECHA_HORA
+    ) AS PREV_ESTADO_NOMBRE,
+
+    LAG(svh.FECHA_HORA) OVER (
+        PARTITION BY svh.SOLICITUD_VISITA_ID
+        ORDER BY svh.FECHA_HORA
+    ) AS PREV_FECHA_HORA
+
+FROM SV_SOLICITUD_VISITA_HISTORIAL svh
+
+-- Relaciones LEFT JOIN
+         LEFT JOIN SV_SOLICITUD_VISISTA sv ON svh.SOLICITUD_VISITA_ID = sv.SOLICITUD_VISITA_ID
+         LEFT JOIN SV_ESTADO_SOLICITUD_VISITA esv ON svh.ESTADO_SOLICITUD_VISITA_CODE = esv.ESTADO_SOLICITUD_VISITA_CODE
+
+WHERE svh.IS_DELETED = FALSE;

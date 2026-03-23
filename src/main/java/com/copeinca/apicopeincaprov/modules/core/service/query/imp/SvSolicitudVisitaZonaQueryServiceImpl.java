@@ -1,0 +1,70 @@
+/*
+ * Autor: Anthony Ramos
+ * Email: anthonyramosdev@gmail.com
+ * Template pack-angular:src/main/java/modules/core/service/query/imp/EntityQueryServiceImpl.java.e.vm
+ */
+package com.copeinca.apicopeincaprov.modules.core.service.query.imp;
+
+import com.copeinca.apicopeincaprov.commons.utils.dto.PagingUtil;
+import com.copeinca.apicopeincaprov.global.dtos.response.PagedRequest;
+import com.copeinca.apicopeincaprov.global.dtos.response.PagedResult;
+import com.copeinca.apicopeincaprov.modules.core.mappers.SvSolicitudVisitaZonaMapper;
+import com.copeinca.apicopeincaprov.modules.core.models.dto.SvSolicitudVisitaZonaDTO;
+import com.copeinca.apicopeincaprov.modules.core.models.dto.filters.SvSolicitudVisitaZonaFilter;
+import com.copeinca.apicopeincaprov.modules.core.models.entities.SvSolicitudVisitaZonaEntity;
+import com.copeinca.apicopeincaprov.modules.core.repositories.jpa.ISvSolicitudVisitaZonaRepository;
+import com.copeinca.apicopeincaprov.modules.core.service.query.ISvSolicitudVisitaZonaQueryService;
+import com.copeinca.apicopeincaprov.modules.core.specification.SvSolicitudVisitaZonaSpecification;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+* Implementación del servicio de consultas para SvSolicitudVisitaZonaEntity
+*/
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class SvSolicitudVisitaZonaQueryServiceImpl implements ISvSolicitudVisitaZonaQueryService {
+
+    private final ISvSolicitudVisitaZonaRepository repository;
+    private final SvSolicitudVisitaZonaMapper mapper;
+
+    @Override
+    public PagedResult<SvSolicitudVisitaZonaDTO> search(PagedRequest<SvSolicitudVisitaZonaFilter> pagedRequest) {
+        SvSolicitudVisitaZonaFilter filter = pagedRequest.getFilter();
+
+        Pageable pageable = PagingUtil.toPageable(pagedRequest);
+
+        Page<SvSolicitudVisitaZonaEntity> page = repository.findAll(SvSolicitudVisitaZonaSpecification.byFilter(filter), pageable);
+
+        List<SvSolicitudVisitaZonaDTO> dtos = page.getContent().stream().map(mapper::entityToDto).collect(Collectors.toList());
+
+        return PagedResult.<SvSolicitudVisitaZonaDTO> builder().count((int) page.getTotalElements()).offset((int) page.getPageable().getOffset())
+                .limit(page.getSize()).page(page.getNumber()).totalPages(page.getTotalPages()).hasNext(page.hasNext()).hasPrevious(page.hasPrevious())
+                .result(dtos).build();
+
+    }
+
+    @Override
+    public SvSolicitudVisitaZonaDTO findById(String id) {
+        SvSolicitudVisitaZonaEntity entity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("SvSolicitudVisitaZonaEntity not found with id: " + id));
+        return mapper.entityToDto(entity);
+    }
+
+    @Override
+    public boolean existsById(String id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    public long countByFilter(SvSolicitudVisitaZonaFilter filter) {
+        return repository.count(SvSolicitudVisitaZonaSpecification.byFilter(filter));
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "xsappname": "api-copeinca-service",
+  "tenant-mode": "dedicated",
+
+  "oauth2-configuration": {
+    "token-validity": 900,
+    "redirect-uris": [
+      "https://*.cfapps.us10-001.hana.ondemand.com/**"
+    ]
+  },
+
+  "scopes": [
+    {
+      "name": "uaa.user",
+      "description": "Default user scope"
+    },
+    {
+      "name": "$XSAPPNAME.admin",
+      "description": "Admin access"
+    }
+  ],
+
+  "role-templates": [
+    {
+      "name": "User",
+      "description": "Default user",
+      "scope-references": [
+        "uaa.user"
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Admin role",
+      "scope-references": [
+        "$XSAPPNAME.admin"
+      ]
+    }
+  ]
+}

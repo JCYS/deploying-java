@@ -1,0 +1,79 @@
+spring:
+  datasource:
+    url: jdbc:sap://d3f93497-9f99-4a55-a276-ecbbe062713f.hna0.prod-us10.hanacloud.ondemand.com:443/?user=IPROVIDER_PRD&currentSchema=IPROVIDER_PRD&password=Pa$$w0rdPRD202202$$&encrypt=true&ValidateCertificate=true
+    username: IPROVIDER_PRD
+    password: Pa$$w0rdPRD202202$$17
+    driver-class-name: com.sap.db.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.HANARowStoreDialect
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    org:
+      springframework: ERROR
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+  pattern:
+    level: ERROR
+
+sap:
+  btp:
+    destination:
+      integration:
+        erp: s4hana-cloud-public
+
+  erp:
+    api:
+      host: https://my417959-api.s4hana.cloud.sap
+      user: SIDE_BY_SIDE_EXTENSIBILITY_USER
+      pass: LTQtXZeDGKneJN<9kwXnYBPzNfnnDlFfnREgkTtZ
+
+
+destination:
+  #  email: https://cpi-prd-cf-dds57f4m.it-cpi019-rt.cfapps.us10-002.hana.ondemand.com/cxf/iproviderMail
+  email: https://cpi-prd-cf-dds57f4m.it-cpi019-rt.cfapps.us10-002.hana.ondemand.com/cxf/wfnotifica
+
+#LINK PORTAL
+portal:
+  #  url: https://copeinca-com.launchpad.cfapps.us10.hana.ondemand.com/site?siteId=92f3480e-7b75-4df7-9c9f-53369af34681#Shell-home
+  url: https://copeinca-com.launchpad.cfapps.us10.hana.ondemand.com/site?siteId=3d31aaf6-15cf-4509-969a-b5b3754404e4#Shell-home
+#IDENTITY AUTENTICATION SERVICE
+
+ias:
+  url: https://avqfsmngl.accounts.ondemand.com/
+  clientId: d21d0726-5e24-427f-b6e7-6a7c5654f3fe
+  clientSecret: N_Y?rDlY--MhDQ1spPJxyLctVmSxo@DqPnK
+
+#LASERFICHE RUTA
+path:
+  files: COPETESTING\LIMA\VIGI-GARITAS\DATPROV\
+  typeDoc: VIGI Datos de Proveedor Servicio y Trabajador
+
+
+mendix:
+  destination:
+#    url: https://copeinca-com.it-cpi019-rt.cfapps.us10-002.hana.ondemand.com
+    url: https://Accesos-Sedes-PRD-Accesos-Sedes.cert.cfapps.us10-001.hana.ondemand.com
+    user: wsODATA
+    password: P3r40D4t424$
+
+laserfiche:
+  destination:
+#    url: https://bizagiqas.copeinca.com.pe
+    url: https://bizagi.copeinca.com.pe
+    user: pprincipe.cons@gmail.commm
+    password: Inicio01$$
+    encode: cHByaW5jaXBlLmNvbnNAZ21haWwuY29tOkluaWNpbzAxJCQ=

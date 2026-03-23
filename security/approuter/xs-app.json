@@ -1,0 +1,13 @@
+{
+  "welcomeFile": "index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/apiservice",
+      "target": "/apiservice",
+      "destination": "api-copeinca-service",
+      "csrfProtection": false,
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

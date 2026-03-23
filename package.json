@@ -1,0 +1,30 @@
+{
+  "name": "aparka-s4hana-cloud-public-backend-extensibility",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "all-commit": "git add . && git commit -m 'prueba' && git push",
+    "all": "yarn build && yarn deploy-cf-dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "login": "cf login --sso",
+    "build": "mvn clean install",
+    "compile-mta": "npx mbt build --mtar archive",
+    "deploy-mta": "cf deploy ./mta_archives/archive.mtar -e mtaext-dev.yaml",
+    "undeploy-mta": "cf undeploy com.innovax.apicopeinca.service  --delete-services --delete-service-keys --delete-service-brokers",
+    "deploy-cf-dev": "cf push --vars-file vars-dev.yml",
+    "deploy-cf-qas": "cf push --vars-file vars-qas.yml",
+    "deploy-cf-prd": "cf push --vars-file vars-prd.yml",
+    "all-deploy-dev": "npm run build && npm run compile-mta && npm run deploy-mta",
+    "all-deploy-m": "npm run build && npm run compile-mta && npm run deploy-mta-module-app",
+    "all-deploy-m2":"npm run compile-mta && npm run deploy-mta-module-app",
+    "deploy-mta-module-app": "cf deploy ./mta_archives/archive.mtar -m api-copeinca-service -e mtaext-dev.yaml",
+    "all-deploy-qas": "npm run build && npm run compile-mta && cf deploy ./mta_archives/archive.mtar -e mtaext-qas.yaml",
+    "all-deploy-prd": "npm run build && npm run compile-mta && cf deploy ./mta_archives/archive.mtar -e mtaext-prd.yaml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csticorp/aparka-s4hana-cloud-public-backend-extensibility"
+  },
+  "private": true
+}

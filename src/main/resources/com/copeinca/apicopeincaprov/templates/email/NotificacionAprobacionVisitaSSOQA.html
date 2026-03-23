@@ -1,0 +1,87 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body style="width: 600px;margin: auto;padding: 0;font-family: Arial, Helvetica, sans-serif;font-size: 14px;color: #333">
+<!-- gold bar -->
+<table cellspacing="0" cellpadding="0" width="600px"
+       style="border-bottom-style: solid;border-bottom-color: #F0AB00;border-bottom-width: 8px;padding-top: 13px;padding-bottom: 12px">
+</table>
+<table cellspacing="0" cellpadding="0" width="600px">
+    <tr style="border-collapse: collapse;width: 600px;padding: 0;margin: 0">
+        <td style="border-collapse: collapse;width: 600px;padding: 0;margin: 0;padding-top: 36px;padding-bottom: 12px">
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Estimado <b>${company_name}</b>,
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Se le comunica que se ha modificado el status de visita programada, en nuestra app de Control de Proveedores.
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                <b>Sede:</b> ${site}<br/>
+                <b>A quien se visita:</b> ${visited_user}<br/>
+                <b>Fecha-hora inicio:</b> ${start_date_time}<br/>
+                <b>Fecha-hora fin:</b> ${end_date_time}<br/>
+                <b>Orden de servicio:</b> ${service_order}<br/>
+                <b>Descripción de visita:</b> ${visit_description}<br/>
+                <b>Observaciones especiales:</b> ${special_observations}<br/>
+                <b>Áreas a visitar:</b> ${areas_to_visit}<br/>
+                <b>Zonas a visitar:</b> ${zones_to_visit}<br/>
+                <b>Alto riesgo?:</b> ${high_risk}<br/>
+                <b>Act. A bordo?:</b> ${onboard}<br/>
+                <b>Andamios?:</b> ${scaffolding}<br/>
+                <b>Grúa?:</b> ${crane}<br/>
+                <b>Equipos móviles?:</b> ${mobile_equipment}<br/>
+                <b>Trabajo de Buceo?:</b> ${diving_work}
+            </p>
+
+            #if($workers && $workers.size() > 0)
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                <b>Lista de Trabajadores</b>
+            </p>
+            <table style="width:100%;border-collapse:collapse;border:1px solid #ddd;">
+                <tr style="background-color:#f0ab00;color:white;">
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">DNI</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">Nombre Completo</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">Status SSO</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:left;">N° Docs</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">Alto Riesgo</th>
+                    <th style="border:1px solid #ddd;padding:8px;text-align:center;">Prevenc</th>
+                </tr>
+                #foreach($worker in $workers)
+                <tr>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.dni}</td>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.fullName}</td>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.statusSso}</td>
+                    <td style="border:1px solid #ddd;padding:8px;">${worker.docsCount}</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.highRisk}</td>
+                    <td style="border:1px solid #ddd;padding:8px;text-align:center;">${worker.preventionist}</td>
+                </tr>
+                #end
+            </table>
+            #end
+
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                <b>Status SSO:</b> ${status_sso}<br/>
+                <b>Motivo SSO:</b> ${reason_sso}<br/>
+                <b>Status Calidad Ambiental:</b> ${status_environmental_quality}<br/>
+                <b>Motivo Calidad Ambiental:</b> ${reason_environmental_quality}
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Puede revisar los datos del servicio accediendo en la url <a href="${url_btp}">${url_btp}</a>
+            </p>
+        </td>
+    </tr>
+</table>
+<table cellspacing="0" cellpadding="0" width="600px">
+    <tr style="border-collapse: collapse;width: 600px;padding: 0;margin: 0">
+        <td style="border-collapse: collapse;width: 600px;padding: 0;margin: 0;padding-top: 12px;padding-bottom: 36px">
+            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 14px;line-height: 18px">
+                Atentamente,<br/>
+                Administrador de Procesos
+            </p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+

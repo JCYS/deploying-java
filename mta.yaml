@@ -1,0 +1,116 @@
+_schema-version: "3.2"
+ID: com.jcystec.apicopeinca.service
+version: 0.0.1
+
+modules:
+
+  # ------------------------ APPLICATION MODULE -----------------------
+  - name: api-copeinca-service
+    type: java
+    path: .
+    properties:
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      JBP_CONFIG_SAP_MACHINE_JDK: "{ version: 21.+ }"
+    parameters:
+      app-name: api-copeinca-service-${space}
+      memory: 2048M
+      disk-quota: 1024M
+      instances: 1
+      buildpack: sap_java_buildpack_jakarta
+      routes:
+        - route: copeinca-${space}-backend.${default-domain}
+    requires:
+      - name: api-copeinca-service-xsuaa-service
+      - name: api-copeinca-service-destination-service
+    provides:
+      - name: srv-api-java
+        properties:
+          srv-url: https://copeinca-${space}-backend.${default-domain}
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean install package
+      build-result: target/apicopeincaprov-0.0.1-SNAPSHOT.jar
+
+  # --------------------- APP ROUTER MODULE ---------------------
+  - name: api-copeinca-service-router
+    type: nodejs
+    path: security/approuter
+    parameters:
+      app-name: api-copeinca-service-router-${space}
+      memory: 1024M
+      disk-quota: 1024M
+      instances: 1
+      buildpack: nodejs_buildpack
+      routes:
+        - route: copeinca-${space}-router.${default-domain}
+    requires:
+      - name: api-copeinca-service-xsuaa-service
+      - name: srv-api-java
+        group: destinations
+        properties:
+          name: api-copeinca-service
+          url: ~{srv-url}
+          forwardAuthToken: true
+    provides:
+      - name: app
+        properties:
+          srv-url: ${default-url}
+    build-parameters:
+      builder: npm
+
+  # --------------------- DESTINATION CONFIG ----------------------
+  - name: destination-content
+    type: com.sap.application.content
+    requires:
+      - name: api-copeinca-service-destination-service
+        parameters:
+          content-target: true
+      - name: srv-api-java
+      - name: api-copeinca-service-xsuaa-service
+        parameters:
+          service-key:
+            name: api-copeinca-service-xsuaa-key-${space}
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Authentication: OAuth2UserTokenExchange
+              Name: api-copeinca-service
+              ServiceInstanceName: api-copeinca-service-xsuaa-${space}
+              ServiceKeyName: api-copeinca-service-xsuaa-key-${space}
+              URL: ~{srv-api-java/srv-url}
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+
+resources:
+
+  # --------------------- DESTINATION SERVICE ------------------
+  - name: api-copeinca-service-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      service-name: api-copeinca-service-destination-${space}
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+
+  # ------------------------ XSUAA SERVICE ---------------------
+  - name: api-copeinca-service-xsuaa-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: security/xs-security.json
+      service: xsuaa
+      service-plan: application
+      service-name: api-copeinca-service-xsuaa-${space}
