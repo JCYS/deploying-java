@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -46,6 +47,8 @@ import java.util.Map;
 
 public class MainController {
 
+    @Autowired(required = false)
+    private Token token;
     @Autowired
     public ClientService clientService;
 
@@ -199,14 +202,17 @@ public ResponseEntity<?> readGroupss(@AuthenticationPrincipal Jwt jwt) {
 
         return token;
     }
-    @GetMapping("/v1/scopes")
-    public List<String> sayScopes(@AuthenticationPrincipal Token token) {
-
-
-
-        List<String> scopes = token.getClaimAsStringList(TokenClaims.XSUAA.XS_USER_ATTRIBUTES);
-
-        return scopes;
+    @GetMapping("/v1/scopesss")
+    public String getToken() {
+        if (token != null) {
+            return token.getAppTid(); // o token.getTokenValue()
+        }
+        return "Token is null";
+    }
+    @GetMapping("/token")
+    public String getToken(Authentication auth) {
+        Jwt jwt = (Jwt) auth.getPrincipal();
+        return jwt.getTokenValue();
     }
 
 //    @GetMapping(path = "/readSedes")
