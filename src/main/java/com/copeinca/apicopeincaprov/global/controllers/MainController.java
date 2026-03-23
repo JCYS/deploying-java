@@ -193,14 +193,14 @@ public ResponseEntity<?> readGroupss(@AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.ok(jwt.getClaims());
     }
     @GetMapping("/fetchToken")
-    public com.sap.cloud.security.token.Token returnToken(@AuthenticationPrincipal Token token) {
+    public ResponseEntity<String> returnToken(@AuthenticationPrincipal Token token) {
         //access to token claims is available via token object, e.g.
         String userName = token.getPrincipal().getName();
         String zoneId = token.getZoneId();
         List<String> scopes = token.getClaimAsStringList(TokenClaims.XSUAA.SCOPES);
 
 
-        return token;
+        return ResponseEntity.ok(userName);
     }
     @GetMapping("/v1/scopesss")
     public String getToken() {
